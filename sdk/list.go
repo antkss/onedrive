@@ -66,3 +66,39 @@ func (client *Client) List(path string) ([]*DriveItem, error) {
 	}
 	return result, nil
 }
+func (client *Client) Search(path string) ([]*DriveItem, error) {
+	if len(path) > 0 && path[0] == '.' {
+		return nil, errors.New("invalid name")
+	}
+	path = strings.TrimSuffix(path, "/")
+	url := GraphURL + "me" + "/drive" + "/root"+ "/search" + "(q='" +path +"')"
+	params := map[string]string{
+		// "top":     "100000",
+		// "orderby": "name",
+	}
+	status, data, err := client.httpGet(url, params)
+	if err != nil {
+		return nil, err
+	}
+	if status == http.StatusNotFound {
+		return nil, errors.New("not found")
+	}
+	if status != http.StatusOK {
+		return nil, client.handleResponseError(status, data)
+	}
+	var resp ListResponse
+	if err := UnmarshalJSON(&resp, data); err != nil {
+		return nil, err
+	}
+	var result []*DriveItem
+	for i := range resp.Items {
+		driveItem := &resp.Items[i]
+		if driveItem.File.MimeType != "" {
+			driveItem.Type = DriveItemTypeFile
+		} else {
+			driveItem.Type = DriveItemTypeFolder
+		}
+		result = append(result, driveItem)
+	}
+	return result, nil
+}

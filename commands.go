@@ -32,6 +32,7 @@ var (
 		"ls":       {Fn: cmdList, MinArgs: 0, InitSecretStore: true, RequireConfig: true},
 		"info":     {Fn: cmdInfo, MinArgs: 1, InitSecretStore: true, RequireConfig: true},
 		"sha1":     {Fn: cmdSHA1, MinArgs: 1, InitSecretStore: true, RequireConfig: true},
+		"search":   {Fn: cmdSearch, MinArgs: 1, InitSecretStore: true, RequireConfig: true},
 		"sha256":   {Fn: cmdSHA256, MinArgs: 1, InitSecretStore: true, RequireConfig: true},
 		"migrate":  {Fn: cmdMigrateConfig, MinArgs: 1, InitSecretStore: false, RequireConfig: false},
 		"version":  {Fn: cmdVersion, MinArgs: 0, InitSecretStore: false, RequireConfig: false},
@@ -55,6 +56,25 @@ func cmdShare(client *sdk.Client, renderer *OutputRenderer, args []string) {
     }
     fmt.Println(respon.Link.WebUrl)
     // print(string(body.link.webUrl))
+}
+func cmdSearch(client *sdk.Client, renderer *OutputRenderer, args []string) {
+	if len(args) >1 {
+	    print("Too much !!")
+	}
+	renderer.initSpinner("Searching for file...")
+	list, err := client.Search(args[0])
+	renderer.stopSpinner()
+	if err != nil {
+		logError("Could not list: " + err.Error())
+		return
+	}
+	for _, item := range list {
+	    itemType := "d"
+	    if item.File.MimeType != "" {
+		    itemType = "f"
+	    }
+	    fmt.Println(itemType, item.Name," <", formatSize(float64(item.SizeBytes)),"> ")
+	}
 }
 func cmdConfig(client *sdk.Client, renderer *OutputRenderer, args []string) {
 	targetPath, err := findConfigFilePath()

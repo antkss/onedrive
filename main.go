@@ -31,6 +31,7 @@ func printHelp() {
 	print("  up localFile path              upload <localFile> to <path>")
 	print("  down sourceFile localPath      download <sourceFile> to <localPath>")
 	print("  share path                         get share link for <path>")
+	print("	 search path                          search for <path>")
 	print("  info path                          show info about <path>")
 	print("  sha1 path                          get SHA1 hash for <path>")
 	print("  sha256 path                        get SHA256 hash for <path>")
