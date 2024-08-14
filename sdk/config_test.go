@@ -7,9 +7,6 @@ func TestReadConfigData(t *testing.T) {
 		"client_id": "019ccb8b-118f-4559-ad2c-2ccda5b9def6",
 		"client_secret": "some-client-secret",
 		"scopes": [
-			"Files.Read",
-			"Files.ReadWrite",
-			"Files.Read.All",
 			"Files.ReadWrite.All",
 			"offline_access"
 		],

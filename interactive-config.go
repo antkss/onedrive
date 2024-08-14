@@ -47,7 +47,7 @@ func (c *InteractiveConfig) promptClientSecret(config *sdk.Config) {
 
 func (c *InteractiveConfig) promptScopes(config *sdk.Config) {
 	fmt.Println("Available scopes:")
-	fmt.Println("1) Default (Files.Read, Files.ReadWrite, Files.Read.All, Files.ReadWrite.All, offline_access)")
+	fmt.Println("1) Default (Files.ReadWrite.All, offline_access)")
 	fmt.Println("2) App Root (Files.ReadWrite.AppFolder, offline_access)")
 	fmt.Println("3) Custom")
 	scope := ' '

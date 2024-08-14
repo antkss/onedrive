@@ -98,6 +98,7 @@ func (client *Client) RenewAccessToken() (*LoginRedeemCodeResponse, error) {
 	params["client_secret"] = client.Config.ClientSecret
 	params["refresh_token"] = client.Config.RefreshToken
 	params["grant_type"] = "refresh_token"
+	params["scope"] = strings.Join(client.Config.Scopes, " ")
 	status, resp, err := client.httpPostForm("https://login.microsoftonline.com/common/oauth2/v2.0/token", params)
 	if err != nil {
 		return nil, err
