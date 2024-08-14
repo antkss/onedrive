@@ -214,6 +214,8 @@ func cmdDownload(client *sdk.Client, renderer *OutputRenderer, args []string) {
 	}()
 	if len(args) > 1 {
 		path2 = args[1]
+	}else{
+	    path2 = "."
 	}
 	err := client.Download(args[0], path2)
 	if err != nil {
