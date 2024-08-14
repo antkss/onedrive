@@ -26,7 +26,7 @@ var (
 		"config":   {Fn: cmdConfig, MinArgs: 0, InitSecretStore: false, RequireConfig: false},
 		"login":    {Fn: cmdLogin, MinArgs: 0, InitSecretStore: false, RequireConfig: true},
 		"mkdir":    {Fn: cmdCreateDir, MinArgs: 1, InitSecretStore: true, RequireConfig: true},
-		"up":   {Fn: cmdUpload, MinArgs: 2, InitSecretStore: true, RequireConfig: true},
+		"up":   {Fn: cmdUpload, MinArgs: 1, InitSecretStore: true, RequireConfig: true},
 		"down": {Fn: cmdDownload, MinArgs: 1, InitSecretStore: true, RequireConfig: true},
 		"rm":       {Fn: cmdDelete, MinArgs: 1, InitSecretStore: true, RequireConfig: true},
 		"ls":       {Fn: cmdList, MinArgs: 0, InitSecretStore: true, RequireConfig: true},
@@ -147,7 +147,12 @@ func cmdCreateDir(client *sdk.Client, renderer *OutputRenderer, args []string) {
 }
 
 func cmdUpload(client *sdk.Client, renderer *OutputRenderer, args []string) {
-	targetFolder := args[len(args)-1]
+	var path string
+	if len(args) >1 {
+	    path = args[len(args)-1]
+	}else{
+	    path = "/"
+	}
 	sourceFiles := args[:len(args)-1]
 	numFiles := 0
 	for _, sourceFile := range sourceFiles {
@@ -177,7 +182,7 @@ func cmdUpload(client *sdk.Client, renderer *OutputRenderer, args []string) {
 		go func() {
 			done = <-client.ChannelTransferFinish
 		}()
-		err = client.Upload(sourceFile, targetFolder)
+		err = client.Upload(sourceFile, path)
 		if err != nil {
 			logError("Could not upload file: " + err.Error())
 			return
@@ -256,9 +261,14 @@ func formatSize(bytes float64) string {
     }
 }
 func cmdList(client *sdk.Client, renderer *OutputRenderer, args []string) {
-	if len(args) > 0 {
+	var path string
+	if len(args) >0 {
+	    path = args[0]
+	}else{
+	    path = "/"
+	}
 	renderer.initSpinner("Retrieving directory listing...")
-	list, err := client.List(args[0])
+	list, err := client.List(path)
 	renderer.stopSpinner()
 	if err != nil {
 		logError("Could not list: " + err.Error())
@@ -271,22 +281,6 @@ func cmdList(client *sdk.Client, renderer *OutputRenderer, args []string) {
 	    }
 	    fmt.Println(itemType, item.Name," <", formatSize(float64(item.SizeBytes)),"> ")
 	}
-	}else{
-	renderer.initSpinner("Retrieving directory listing...")
-	list, err := client.List("/")
-	renderer.stopSpinner()
-	if err != nil {
-	    logError("Could not list: " + err.Error())
-	    return
-	}
-	for _, item := range list {
-	    itemType := "d"
-	    if item.File.MimeType != "" {
-		    itemType = "f"
-	    }
-	    fmt.Println(itemType, item.Name, formatSize(float64(item.SizeBytes)))
-	}
-    }
 
 }
 
