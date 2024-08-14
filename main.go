@@ -80,7 +80,7 @@ func findConfigFilePath() (string, error) {
 			return "", errors.New("could neither get system config dir nor current working dir")
 		}
 	} else {
-		configPath = filepath.Join(configPath, "onedrive-uploader")
+		configPath = filepath.Join(configPath, "onedrive")
 		_, err := os.Stat(configPath)
 		if err != nil && os.IsNotExist(err) {
 			os.MkdirAll(configPath, os.FileMode(0700))
