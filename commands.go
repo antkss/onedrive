@@ -27,7 +27,7 @@ var (
 		"login":    {Fn: cmdLogin, MinArgs: 0, InitSecretStore: false, RequireConfig: true},
 		"mkdir":    {Fn: cmdCreateDir, MinArgs: 1, InitSecretStore: true, RequireConfig: true},
 		"up":   {Fn: cmdUpload, MinArgs: 2, InitSecretStore: true, RequireConfig: true},
-		"down": {Fn: cmdDownload, MinArgs: 2, InitSecretStore: true, RequireConfig: true},
+		"down": {Fn: cmdDownload, MinArgs: 1, InitSecretStore: true, RequireConfig: true},
 		"rm":       {Fn: cmdDelete, MinArgs: 1, InitSecretStore: true, RequireConfig: true},
 		"ls":       {Fn: cmdList, MinArgs: 0, InitSecretStore: true, RequireConfig: true},
 		"info":     {Fn: cmdInfo, MinArgs: 1, InitSecretStore: true, RequireConfig: true},
@@ -190,6 +190,7 @@ func cmdUpload(client *sdk.Client, renderer *OutputRenderer, args []string) {
 
 func cmdDownload(client *sdk.Client, renderer *OutputRenderer, args []string) {
 	done := false
+	var path2 string
 	go func() {
 		var fileStat fs.FileInfo = nil
 		for fileStat == nil {
@@ -211,7 +212,10 @@ func cmdDownload(client *sdk.Client, renderer *OutputRenderer, args []string) {
 	go func() {
 		done = <-client.ChannelTransferFinish
 	}()
-	err := client.Download(args[0], args[1])
+	if len(args) > 1 {
+		path2 = args[1]
+	}
+	err := client.Download(args[0], path2)
 	if err != nil {
 		logError("Could not download file: " + err.Error())
 		return
