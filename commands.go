@@ -154,6 +154,7 @@ func cmdUpload(client *sdk.Client, renderer *OutputRenderer, args []string) {
 	    path = "/"
 	}
 	sourceFiles := args[:len(args)-1]
+	fmt.Println(sourceFiles)
 	numFiles := 0
 	for _, sourceFile := range sourceFiles {
 		fileStat, err := os.Stat(sourceFile)
