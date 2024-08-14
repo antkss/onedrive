@@ -147,12 +147,7 @@ func cmdCreateDir(client *sdk.Client, renderer *OutputRenderer, args []string) {
 }
 
 func cmdUpload(client *sdk.Client, renderer *OutputRenderer, args []string) {
-	var path string
-	if len(args) >1 {
-	    path = args[len(args)-1]
-	}else{
-	    path = "/"
-	}
+	path := args[len(args)-1]
 	sourceFiles := args[:len(args)-1]
 	fmt.Println(sourceFiles)
 	numFiles := 0
