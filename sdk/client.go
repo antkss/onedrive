@@ -11,6 +11,9 @@ import (
 	"net/url"
 	"strconv"
 	"strings"
+	"context"
+	"net"
+	"time"
 )
 
 var (
@@ -154,6 +157,28 @@ func (client *Client) httpPostJSON(uri string, o interface{}) (int, []byte, erro
 }
 
 func (client *Client) httpRequest(method, uri string, requestHeaders, params HTTPRequestParams, payload []byte, progress transferProgress) (int, []byte, error) {
+  var (
+    dnsResolverIP        = "8.8.8.8:53" // Google DNS resolver.
+    dnsResolverProto     = "udp"        // Protocol to use for the DNS resolver
+    dnsResolverTimeoutMs = 5000         // Timeout (ms) for the DNS resolver (optional)
+  )
+
+  dialer := &net.Dialer{
+    Resolver: &net.Resolver{
+      PreferGo: true,
+      Dial: func(ctx context.Context, network, address string) (net.Conn, error) {
+        d := net.Dialer{
+          Timeout: time.Duration(dnsResolverTimeoutMs) * time.Millisecond,
+        }
+        return d.DialContext(ctx, dnsResolverProto, dnsResolverIP)
+      },
+    },
+  }
+
+  dialContext := func(ctx context.Context, network, addr string) (net.Conn, error) {
+    return dialer.DialContext(ctx, network, addr)
+  }
+  http.DefaultTransport.(*http.Transport).DialContext = dialContext
 	httpClient := &http.Client{}
 	uri = client.buildURI(uri, params)
 	total := int64(0)

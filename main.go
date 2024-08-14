@@ -7,7 +7,6 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
-
 	"github.com/virtualzone/onedrive-uploader/sdk"
 )
 
