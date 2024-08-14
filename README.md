@@ -139,3 +139,5 @@ onedrive-uploader migrate /path/to/existing/config.json
 ```
 
 You can safely delete your existing ```config.json``` and ```secret.json``` files after the migration has been performed successfully.
+# onedrive_cli
+this is a modified version of onedrive cli in golang
