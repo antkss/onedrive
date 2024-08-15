@@ -91,12 +91,12 @@ onedrive-uploader ls test
 
 Upload local file "image.jpg" to the "test" folder:
 ```
-onedrive-uploader upload /tmp/image.jpg test
+onedrive-uploader up /tmp/image.jpg test
 ```
 
 Download "notes.docx" from the root directory:
 ```
-onedrive-uploader download /notes.docx /tmp
+onedrive-uploader down /notes.docx /tmp
 ```
 
 Delete "notes.docx" from the root directory:
