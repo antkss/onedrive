@@ -1,4 +1,4 @@
-# OneDrive Uploader
+# OneDrive Uploader (modified version)
 [![](https://img.shields.io/github/v/release/virtualzone/onedrive-uploader)](https://github.com/virtualzone/onedrive-uploader/releases)
 [![](https://img.shields.io/github/release-date/virtualzone/onedrive-uploader)](https://github.com/virtualzone/onedrive-uploader/releases)
 [![](https://img.shields.io/github/actions/workflow/status/virtualzone/onedrive-uploader/test.yml?branch=main)](https://github.com/virtualzone/onedrive-uploader/actions)
@@ -139,5 +139,4 @@ onedrive-uploader migrate /path/to/existing/config.json
 ```
 
 You can safely delete your existing ```config.json``` and ```secret.json``` files after the migration has been performed successfully.
-# onedrive_cli
-this is a modified version of onedrive cli in golang
+
