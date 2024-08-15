@@ -30,7 +30,7 @@ var (
 		"down": {Fn: cmdDownload, MinArgs: 1, InitSecretStore: true, RequireConfig: true},
 		"rm":       {Fn: cmdDelete, MinArgs: 1, InitSecretStore: true, RequireConfig: true},
 		"ls":       {Fn: cmdList, MinArgs: 0, InitSecretStore: true, RequireConfig: true},
-		"info":     {Fn: cmdInfo, MinArgs: 1, InitSecretStore: true, RequireConfig: true},
+		"info":     {Fn: cmdInfo, MinArgs: 0, InitSecretStore: true, RequireConfig: true},
 		"sha1":     {Fn: cmdSHA1, MinArgs: 1, InitSecretStore: true, RequireConfig: true},
 		"search":   {Fn: cmdSearch, MinArgs: 1, InitSecretStore: true, RequireConfig: true},
 		"sha256":   {Fn: cmdSHA256, MinArgs: 1, InitSecretStore: true, RequireConfig: true},
@@ -302,7 +302,15 @@ func cmdList(client *sdk.Client, renderer *OutputRenderer, args []string) {
 
 func cmdInfo(client *sdk.Client, renderer *OutputRenderer, args []string) {
 	renderer.initSpinner("Retrieving information...")
-	item, err := client.Info(args[0])
+	var path string
+	path = "/"
+	if len(args) >0 {
+	    path = args[0]
+	}
+	item, err := client.Info(path)
+	if path == "/"{
+	    return
+	}
 	renderer.stopSpinner()
 	if err != nil {
 		logError("Could not get info: " + err.Error())

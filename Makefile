@@ -8,7 +8,7 @@ clean:
 update_version_file:
 	echo -ne "package main\n\nvar AppVersion = \"${VERSION}\"" > version.go
 
-linux: linux_amd64 
+linux: linux_amd64 windows_amd64
 
 macos: macos_amd64 macos_arm64
 
