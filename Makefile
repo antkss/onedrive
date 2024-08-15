@@ -29,8 +29,8 @@ linux_amd64:
 # macos_arm64:
 # 	env CGO_ENABLED=0 GOOS=darwin GOARCH=arm64 go build -ldflags="-w -s" -o build/onedrive-uploader_macos_arm64_${VERSION}
 #
-# windows_amd64:
-# 	env CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build -ldflags="-w -s" -o build/onedrive-uploader_windows_amd64_${VERSION}.exe
+windows_amd64:
+	env CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build -ldflags="-w -s" -o build/onedrive-uploader_windows_amd64_${VERSION}.exe
 #
 # windows_arm64:
 # 	env CGO_ENABLED=0 GOOS=windows GOARCH=arm64 go build -ldflags="-w -s" -o build/onedrive-uploader_windows_arm64_${VERSION}.exe
