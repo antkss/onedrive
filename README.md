@@ -61,6 +61,10 @@ After that, execute the following command to log in with your OneDrive account:
 ```
 onedrive-uploader login
 ```
+New
+```
+onedrive-uploader search <keyword>
+```
 
 For headless machines you must perform the actual login on a computer *with* a web browser. To do this, you can...
 * ...either run the ```config``` and ```login``` commands on another computer with a web browser and then copy the ```config.json``` to the headless computer after having logged in
