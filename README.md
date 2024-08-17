@@ -145,4 +145,4 @@ onedrive-uploader migrate /path/to/existing/config.json
 You can safely delete your existing ```config.json``` and ```secret.json``` files after the migration has been performed successfully.
 - install :
 ```bash
-wget "https://github.com/antkss/onedrive/raw/master/build/onedrive-uploader_linux_amd64_v0.8.2" && mv onedrive-uploader_linux_amd64_v0.8.2 onedrive && mv onedrive /usr/bin```
+wget "https://github.com/antkss/onedrive/raw/master/build/onedrive-uploader_linux_amd64_v0.8.2" && mv onedrive-uploader_linux_amd64_v0.8.2 onedrive && mv onedrive /usr/bin&&chmod a+x /usr/bin/onedrive```
