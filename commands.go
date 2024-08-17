@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"os"
 	"strconv"
+	"flag"
 	"time"
 
 	"github.com/virtualzone/onedrive-uploader/sdk"
@@ -20,7 +21,24 @@ type CommandFunctionDefinition struct {
 	InitSecretStore bool
 	RequireConfig   bool
 }
-
+func printHelp() {
+	flag.Usage()
+	print("  config                             create config")
+	print("  login                              perform login")
+	print("  mkdir path                         create remote directory <path>")
+	print("  ls path                            list items in <path>")
+	print("  rm path                            delete <path>")
+	print("  up localFile path              upload <localFile> to <path>")
+	print("  down sourceFile localPath      download <sourceFile> to <localPath>")
+	print("  share path                         get share link for <path>")
+	print("	 search path                          search for <path>")
+	print("  info path                          show info about <path>")
+	print("  sha1 path                          get SHA1 hash for <path>")
+	print("  sha256 path                        get SHA256 hash for <path>")
+	print("  help                               show help")
+	print("  migrate configPath                 migrate from old (< v0.6) config at <configPath> to current config")
+	print("  version                            show version")
+}
 var (
 	commands = map[string]*CommandFunctionDefinition{
 		"config":   {Fn: cmdConfig, MinArgs: 0, InitSecretStore: false, RequireConfig: false},
@@ -37,6 +55,7 @@ var (
 		"migrate":  {Fn: cmdMigrateConfig, MinArgs: 1, InitSecretStore: false, RequireConfig: false},
 		"version":  {Fn: cmdVersion, MinArgs: 0, InitSecretStore: false, RequireConfig: false},
 		"share":    {Fn: cmdShare, MinArgs: 1, InitSecretStore: true, RequireConfig: true},
+		"help":     {Fn: cmdHelp, MinArgs: 0, InitSecretStore: false, RequireConfig: false},
 	}
 )
 type Link struct {
@@ -45,6 +64,9 @@ type Link struct {
 
 type Response struct {
     Link Link `json:"link"`
+}
+func cmdHelp(client *sdk.Client, renderer *OutputRenderer, args []string) {
+	printHelp()
 }
 func cmdShare(client *sdk.Client, renderer *OutputRenderer, args []string) {
     body := client.Share(args[0])

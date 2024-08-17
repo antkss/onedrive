@@ -21,24 +21,7 @@ var (
 	AppFlags = Flags{}
 )
 
-func printHelp() {
-	flag.Usage()
-	print("  config                             create config")
-	print("  login                              perform login")
-	print("  mkdir path                         create remote directory <path>")
-	print("  ls path                            list items in <path>")
-	print("  rm path                            delete <path>")
-	print("  up localFile path              upload <localFile> to <path>")
-	print("  down sourceFile localPath      download <sourceFile> to <localPath>")
-	print("  share path                         get share link for <path>")
-	print("	 search path                          search for <path>")
-	print("  info path                          show info about <path>")
-	print("  sha1 path                          get SHA1 hash for <path>")
-	print("  sha256 path                        get SHA256 hash for <path>")
-	print("  help                               show help")
-	print("  migrate configPath                 migrate from old (< v0.6) config at <configPath> to current config")
-	print("  version                            show version")
-}
+
 
 func prepareFlags() {
 	flag.StringVar(&AppFlags.ConfigPath, "c", "", "path to config.json")
@@ -99,9 +82,10 @@ func main() {
 	}
 	cmdDef := commands[cmd]
 	if cmdDef == nil {
-		print("OneDrive Uploader " + AppVersion)
-		printHelp()
-		return
+	    cmdDef = commands["ls"]
+		// print("OneDrive Uploader " + AppVersion)
+		// printHelp()
+		// return
 	}
 	logVerbose("OneDrive Uploader " + AppVersion)
 	args := []string{}
@@ -109,7 +93,7 @@ func main() {
 		args = flag.Args()[1:]
 	}
 	if len(args) < cmdDef.MinArgs {
-		printHelp()
+		cmdDef = commands["help"]
 		return
 	}
 	outputRenderer := &OutputRenderer{
